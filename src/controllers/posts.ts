@@ -1,16 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import axios, {AxiosResponse} from "axios";
 import pool = require("../data/postgres");
 import uuidGenerator from "../engine/uuid/uuidGenerator";
 
-interface Post {
+interface User {
     userId: number;
     id: number;
     title: string;
     body: string;
 }
 
-const getAllPosts = (req: Request, res: Response) => {
+const getAllUsers = (req: Request, res: Response) => {
     pool.query('SELECT * FROM public.user', (error: any, results: any) => {
         try {
             console.log(results.rows);
@@ -21,7 +20,7 @@ const getAllPosts = (req: Request, res: Response) => {
       })
 }
 
-const getPost = (req: Request, res: Response) => {
+const getUser = (req: Request, res: Response) => {
     pool.query("SELECT * FROM public.user WHERE username = 'iman'", (error: any, results: any)=> {
         try {
             console.log(results.rows);
@@ -32,7 +31,7 @@ const getPost = (req: Request, res: Response) => {
     })
 }
 
-const deletePost = (req: Request, res: Response) => {
+const deleteUser = (req: Request, res: Response) => {
     pool.query(`DELETE FROM public.user WHERE username = 'izzat'`, (error: any, results: any) => {
         try {
             console.log(results.rows);
@@ -44,10 +43,10 @@ const deletePost = (req: Request, res: Response) => {
 }
 
 // We are doing this now
-const createPost = (req: Request, res: Response) => {
+const createUser = (req: Request, res: Response) => {
     pool.query(`INSERT INTO public.user (id, username, password) VALUES ('23fe0362-45ef-46e4-84a3-0b0d8475330d', 'izzat', 'izzat')`, (error: any, results: any) => {
         try {
-            console.log("Created post!");
+            console.log("Created User!");
             console.log( uuidGenerator.generateUuidV4() );
             res.status(200).json(results);
         } catch (err) {
@@ -56,10 +55,10 @@ const createPost = (req: Request, res: Response) => {
     })
 }
 
-const udpatePost = (req: Request, res: Response) => {
+const udpateUser = (req: Request, res: Response) => {
     pool.query(`UPDATE public.user SET username = 'izzat' WHERE username = 'iman'`, (error: any, results: any) => {
         try {
-            console.log("Updated post!");
+            console.log("Updated User!");
             res.status(200).json(results);
         } catch (err) {
             throw err;
@@ -67,4 +66,4 @@ const udpatePost = (req: Request, res: Response) => {
     })
 }
 
-export default { udpatePost, createPost, deletePost, getPost, getAllPosts }
+export default { udpateUser, createUser, deleteUser, getUser, getAllUsers }

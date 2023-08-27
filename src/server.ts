@@ -1,7 +1,7 @@
 import http from 'http';
 import express, { Express } from 'express';
 import * as dotenv from 'dotenv';
-import routes from './routes/posts';
+import routes from './routes/userRoute';
 
 dotenv.config();
 
@@ -10,14 +10,13 @@ const app: Express = express();
 /** CORS */
 const cors = require('cors');
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_HOST,
     methods: ['GET', 'DELETE', 'POST', 'PUT'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    maxAge: 600
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 /** Routes */
-app.use('/', routes);
+app.use('/api', routes);
 
 /** Error */
 app.use((req, res, next) => {
