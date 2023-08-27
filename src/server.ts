@@ -2,6 +2,7 @@ import http from 'http';
 import express, { Express } from 'express';
 import * as dotenv from 'dotenv';
 import routes from './routes/userRoute';
+import uuidGenerator from './engine/uuid/uuidGenerator';
 
 dotenv.config();
 

@@ -44,10 +44,10 @@ const deleteUser = (req: Request, res: Response) => {
 
 // We are doing this now
 const createUser = (req: Request, res: Response) => {
-    pool.query(`INSERT INTO public.user (id, username, password) VALUES ('23fe0362-45ef-46e4-84a3-0b0d8475330d', 'izzat', 'izzat')`, (error: any, results: any) => {
+    pool.query(`INSERT INTO public.user (id, username, password) VALUES ('${uuidGenerator.uuidV4()}', 'iman', 'iman')`, (error: any, results: any) => {
         try {
             console.log("Created User!");
-            console.log( uuidGenerator.generateUuidV4() );
+            console.log(results);
             res.status(200).json(results);
         } catch (err) {
             throw err;
