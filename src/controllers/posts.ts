@@ -2,13 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import pool = require("../data/postgres");
 import uuidGenerator from "../engine/uuid/uuidGenerator";
 
-interface User {
-    userId: number;
-    id: number;
-    title: string;
-    body: string;
-}
-
 const getAllUsers = (req: Request, res: Response) => {
     pool.query('SELECT * FROM public.user', (error: any, results: any) => {
         try {
@@ -44,7 +37,10 @@ const deleteUser = (req: Request, res: Response) => {
 
 // We are doing this now
 const createUser = (req: Request, res: Response) => {
-    pool.query(`INSERT INTO public.user (id, username, password) VALUES ('${uuidGenerator.uuidV4()}', 'iman', 'iman')`, (error: any, results: any) => {
+    pool.query(`INSERT INTO public.user 
+    (id, username, password) VALUES 
+    ('${uuidGenerator.uuidV4()}', 'iman', 'iman')`, 
+    (error: any, results: any) => {
         try {
             console.log("Created User!");
             console.log(results);
