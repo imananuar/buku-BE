@@ -2,7 +2,6 @@ import http from 'http';
 import express, { Express } from 'express';
 import * as dotenv from 'dotenv';
 import routes from './routes/userRoute';
-import uuidGenerator from './engine/uuid/uuidGenerator';
 
 dotenv.config();
 
@@ -15,6 +14,8 @@ app.use(cors({
     methods: ['GET', 'DELETE', 'POST', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.use(express.json());
 
 /** Routes */
 app.use('/api', routes);

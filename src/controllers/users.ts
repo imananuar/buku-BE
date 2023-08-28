@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import pool = require("../data/postgres");
-import uuidGenerator from "../engine/uuid/uuidGenerator";
+import credentials from "../middleware/credentials/credentials";
 
 const getAllUsers = (req: Request, res: Response) => {
     pool.query('SELECT * FROM public.user', (error: any, results: any) => {
@@ -37,21 +37,31 @@ const deleteUser = (req: Request, res: Response) => {
 
 // We are doing this now
 const createUser = (req: Request, res: Response) => {
-    pool.query(`INSERT INTO public.user 
-    (id, username, password) VALUES 
-    ('${uuidGenerator.uuidV4()}', 'iman', 'iman')`, 
-    (error: any, results: any) => {
-        try {
-            console.log("Created User!");
-            console.log(results);
-            res.status(200).json(results);
-        } catch (err) {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password are required.' });
+    }
+
+    credentials.hashPassword(password)
+        .then((hash: string) => {
+            console.log(`username: ${username}, password: ${password}`);
+            pool.query(`INSERT INTO public.user (id, username, password) VALUES ('${credentials.uuidV4()}', '${username}', '${hash}')`, 
+            (error: any, results: any) => {
+                try {
+                    console.log("Created User!");
+                    res.status(200).json(results);
+                } catch (err) {
+                    throw err;
+                }
+            })
+        })
+        .catch((err: Error) => {
             throw err;
-        }
-    })
+        })
 }
 
-const udpateUser = (req: Request, res: Response) => {
+const updateUser = (req: Request, res: Response) => {
     pool.query(`UPDATE public.user SET username = 'izzat' WHERE username = 'iman'`, (error: any, results: any) => {
         try {
             console.log("Updated User!");
@@ -62,4 +72,4 @@ const udpateUser = (req: Request, res: Response) => {
     })
 }
 
-export default { udpateUser, createUser, deleteUser, getUser, getAllUsers }
+export default { updateUser, createUser, deleteUser, getUser, getAllUsers }
