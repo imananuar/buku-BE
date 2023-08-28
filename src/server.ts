@@ -1,7 +1,7 @@
 import http from 'http';
 import express, { Express } from 'express';
 import * as dotenv from 'dotenv';
-import routes from './routes/userRoute';
+import router from './routes';
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 /** Routes */
-app.use('/api', routes);
+app.use('/api', router);
 
 /** Error */
 app.use((req, res, next) => {

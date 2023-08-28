@@ -1,9 +1,16 @@
-import { Request, Response, NextFunction } from "express";
-import pool = require("../data/postgres");
+import { Request, Response } from "express";
+import db = require("../data/postgres");
 import credentials from "../middleware/credentials/credentials";
 
+/**
+ * All API for users
+ * 
+ * @param req 
+ * @param res 
+ */
+
 const getAllUsers = (req: Request, res: Response) => {
-    pool.query('SELECT * FROM public.user', (error: any, results: any) => {
+    db.query('SELECT * FROM public.user', (error: any, results: any) => {
         try {
             console.log(results.rows);
             res.status(200).json(results.rows);
@@ -14,7 +21,7 @@ const getAllUsers = (req: Request, res: Response) => {
 }
 
 const getUser = (req: Request, res: Response) => {
-    pool.query("SELECT * FROM public.user WHERE username = 'iman'", (error: any, results: any)=> {
+    db.query("SELECT * FROM public.user WHERE username = 'iman'", (error: any, results: any)=> {
         try {
             console.log(results.rows);
             res.status(200).json(results.rows);
@@ -25,7 +32,7 @@ const getUser = (req: Request, res: Response) => {
 }
 
 const deleteUser = (req: Request, res: Response) => {
-    pool.query(`DELETE FROM public.user WHERE username = 'izzat'`, (error: any, results: any) => {
+    db.query(`DELETE FROM public.user WHERE username = 'izzat'`, (error: any, results: any) => {
         try {
             console.log(results.rows);
             res.status(200).json(results.rows);
@@ -35,7 +42,6 @@ const deleteUser = (req: Request, res: Response) => {
     })
 }
 
-// We are doing this now
 const createUser = (req: Request, res: Response) => {
     const { username, password } = req.body;
 
@@ -46,7 +52,7 @@ const createUser = (req: Request, res: Response) => {
     credentials.hashPassword(password)
         .then((hash: string) => {
             console.log(`username: ${username}, password: ${password}`);
-            pool.query(`INSERT INTO public.user (id, username, password) VALUES ('${credentials.uuidV4()}', '${username}', '${hash}')`, 
+            db.query(`INSERT INTO public.user (id, username, password) VALUES ('${credentials.uuidV4()}', '${username}', '${hash}')`, 
             (error: any, results: any) => {
                 try {
                     console.log("Created User!");
@@ -62,7 +68,7 @@ const createUser = (req: Request, res: Response) => {
 }
 
 const updateUser = (req: Request, res: Response) => {
-    pool.query(`UPDATE public.user SET username = 'izzat' WHERE username = 'iman'`, (error: any, results: any) => {
+    db.query(`UPDATE public.user SET username = 'izzat' WHERE username = 'iman'`, (error: any, results: any) => {
         try {
             console.log("Updated User!");
             res.status(200).json(results);

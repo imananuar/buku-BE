@@ -1,12 +1,12 @@
 import express from 'express';
 import controller from '../controllers/users';
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.get('/allUsers', controller.getAllUsers);
-router.get('/user', controller.getUser);
-router.delete('/user', controller.deleteUser);
-router.post('/user', controller.createUser);
-router.put('/user', controller.updateUser);
+userRouter.get('/allUsers', controller.getAllUsers);
+userRouter.get('/', controller.getUser);
+userRouter.delete('/', controller.deleteUser);
+userRouter.post('/', controller.createUser);
+userRouter.put('/', controller.updateUser);
 
-export = router;
+export = userRouter;

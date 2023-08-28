@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 const Pool: any = require('pg').Pool;
 
-const pool = new Pool({
+const db = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
@@ -11,4 +11,4 @@ const pool = new Pool({
     port: process.env.DB_PORT
 })
 
-export = pool
+export = db
